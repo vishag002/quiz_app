@@ -9,7 +9,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   int i = 0;
+  int count = DataBase.myDB.length;
+
   int? checkValue;
 
   //check function
@@ -23,10 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
   //next button
   void next() {
     setState(() {
-      if (i < 3) {
+      if (i <= count - 2) {
         i++;
       }
     });
+    checkValue = null;
+    print(count);
   }
 
   //prev button
@@ -89,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Question ${i + 1}/20",
+                              "Question ${i + 1}/25",
                               style: TextStyle(
                                   color: Colors.lightBlue[900],
                                   fontSize: 18,
@@ -131,18 +141,20 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 50),
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: DataBase.myDB.length,
+                itemCount: 4,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () => check(index),
+                    onTap: () {
+                      check(index);
+                    },
                     child: Container(
                       height: 80,
                       width: 100,
                       decoration: BoxDecoration(
                         color: checkValue == index
                             ? checkValue == DataBase.myDB[i]['answer']
-                                ? Colors.green
-                                : Colors.red
+                                ? Colors.lightGreen
+                                : Colors.deepOrange.shade800
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
@@ -158,6 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 20,
                             fontWeight: FontWeight.w400,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
