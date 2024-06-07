@@ -1,8 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quiz_app/database/db.dart';
+import 'package:quiz_app/utilis/audio_const.dart';
 import 'package:quiz_app/utilis/color_const.dart';
 import 'package:quiz_app/view/result_screen.dart';
 
@@ -14,6 +18,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  //audio player
+
+//
   @override
   void initState() {
     super.initState();
@@ -24,13 +31,16 @@ class _HomeScreenState extends State<HomeScreen> {
   int count = DataBase.myDB.length;
   int? checkValue;
   bool showAnswer = false;
+  bool showLottie = false;
   int score = 0;
 
+  //show ans after the time runs out
   void showAns(int index) {
     int ansIndex = DataBase.myDB[i]['answer'];
     if (index == ansIndex) {
       showAnswer = true;
     }
+
     checkValue = index;
     setState(() {});
   }
@@ -40,9 +50,28 @@ class _HomeScreenState extends State<HomeScreen> {
     int ansIndex = DataBase.myDB[i]['answer'];
     if (checkValue == null && index == ansIndex) {
       score++;
+      playCorrectSound();
+      showLottieAnimation();
+    } else if (index != ansIndex && timerValue != 0) {
+      playInCorrectSound();
     }
+    /* else if (timerValue == 0) {
+      playTimeOutSound();
+    } */
     checkValue = index;
     setState(() {});
+  }
+
+  //lottie animation
+  void showLottieAnimation() {
+    setState(() {
+      showLottie = true;
+    });
+    Timer(Duration(seconds: 2), () {
+      setState(() {
+        showLottie = false;
+      });
+    });
   }
 
   //next button
@@ -86,18 +115,27 @@ class _HomeScreenState extends State<HomeScreen> {
   void startCountDown() {
     int ansIndex = DataBase.myDB[i]['answer'];
     countdownTimer?.cancel();
-    countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+    countdownTimer = Timer.periodic(Duration(seconds: 2), (timer) {
       setState(() {
         if (timerValue > 0) {
           timerValue--;
         } else {
+          playTimeOutSound();
           timer.cancel();
           showAns(ansIndex);
+
           // showAnswer = true;
         }
       });
     });
   }
+
+  //audio
+  /* @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -112,198 +150,215 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           gradient: ColorConst.backgroundG,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                height: 400,
-                width: double.infinity,
-                //    color: Colors.amber[100],
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 300,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: Colors.lightBlue[900],
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40),
-                            bottomLeft: Radius.circular(50),
-                            bottomRight: Radius.circular(50),
-                          ),
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://as1.ftcdn.net/v2/jpg/04/67/10/02/1000_F_467100228_IB9BaE1WU8pHRgDruKi2WhcHpMQtrTYK.jpg"),
-                              fit: BoxFit.fitHeight,
-                              scale: 1)),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 25,
-                      child: Center(
-                        child: Container(
-                          height: 200,
-                          width: 340,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    height: 400,
+                    width: double.infinity,
+                    //    color: Colors.amber[100],
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 300,
+                          width: double.infinity,
                           decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.lightBlue.withOpacity(0.1),
-                                spreadRadius: 5,
-                                blurRadius: 10,
-                                blurStyle: BlurStyle.solid,
-                                offset: Offset(3, 3),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Question ${i + 1}/25",
-                                style: TextStyle(
-                                    color: ColorConst.textColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
+                              color: Colors.lightBlue[900],
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(40),
+                                topRight: Radius.circular(40),
+                                bottomLeft: Radius.circular(50),
+                                bottomRight: Radius.circular(50),
                               ),
-                              SizedBox(height: 30),
-                              Text(
-                                DataBase.myDB[i]['question'],
-                                style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: ColorConst.textColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.center,
-                              )
-                            ],
-                          ),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      "https://pngtree.com/freebackground/orange-yellow-abstract-fluid-background_1306290.html"),
+                                  fit: BoxFit.fitHeight,
+                                  scale: 1)),
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      child: Center(
-                        child: CircleAvatar(
-                          radius: 45,
-                          child: CircleAvatar(
-                            radius: 40,
-                            child: Text(
-                              timerValue.toString(),
-                              style: GoogleFonts.aBeeZee(
-                                color: ColorConst.textColor,
-                                fontSize: 30,
-                                fontWeight: FontWeight.w600,
+                        Positioned(
+                          bottom: 0,
+                          left: 25,
+                          child: Center(
+                            child: Container(
+                              height: 200,
+                              width: 340,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.lightBlue.withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 10,
+                                    blurStyle: BlurStyle.solid,
+                                    offset: Offset(3, 3),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(30),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Question ${i + 1}/25",
+                                    style: TextStyle(
+                                        color: ColorConst.textColor,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(height: 30),
+                                  Text(
+                                    DataBase.myDB[i]['question'],
+                                    style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: ColorConst.textColor,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.center,
+                                  )
+                                ],
                               ),
                             ),
-                            backgroundColor: ColorConst.secondary,
                           ),
-                          backgroundColor: Colors.white,
                         ),
-                      ),
+                        Positioned(
+                          child: Center(
+                            child: CircleAvatar(
+                              radius: 45,
+                              child: CircleAvatar(
+                                radius: 40,
+                                child: Text(
+                                  timerValue.toString(),
+                                  style: GoogleFonts.aBeeZee(
+                                    color: ColorConst.textColor,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                backgroundColor: ColorConst.secondary,
+                              ),
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        check(index);
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            check(index);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: 65,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: checkValue == index
+                                    ? checkValue == DataBase.myDB[i]['answer']
+                                        ? Colors.lightGreen
+                                        : Colors.deepOrange.shade800
+                                    : Colors.white,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(70),
+                                    bottomRight: Radius.circular(70)),
+                                /* border: Border.all(
+                                color: Colors.lightBlue.shade900.withOpacity(0.9),
+                                width: 5,
+                                style: BorderStyle.solid,
+                              ), */
+                              ),
+                              child: Center(
+                                child: Text(
+                                  DataBase.myDB[i]['options'][index],
+                                  style: TextStyle(
+                                    color: ColorConst.background,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: prev,
                         child: Container(
-                          height: 65,
-                          width: 150,
+                          height: 50,
+                          width: 100,
                           decoration: BoxDecoration(
-                            color: checkValue == index
-                                ? checkValue == DataBase.myDB[i]['answer']
-                                    ? Colors.lightGreen
-                                    : Colors.deepOrange.shade800
-                                : Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(70),
-                                bottomRight: Radius.circular(70)),
-                            /* border: Border.all(
-                              color: Colors.lightBlue.shade900.withOpacity(0.9),
-                              width: 5,
-                              style: BorderStyle.solid,
-                            ), */
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.amber.shade900,
                           ),
                           child: Center(
-                            child: Text(
-                              DataBase.myDB[i]['options'][index],
-                              style: TextStyle(
-                                color: ColorConst.background,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+                              child: Text(
+                            "prev",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          )),
                         ),
                       ),
-                    );
-                  },
+                      InkWell(
+                        onTap: next,
+                        child: Container(
+                          height: 50,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.amber.shade900,
+                          ),
+                          child: Center(
+                              child: Text(
+                            "next",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          )),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            if (showLottie)
+              Positioned(
+                bottom: 100,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Lottie.asset(
+                    'assets/lotti_animation/animation_1.json',
+                    width: w1,
+                    height: h1,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: prev,
-                    child: Container(
-                      height: 50,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.amber.shade900,
-                      ),
-                      child: Center(
-                          child: Text(
-                        "prev",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
-                      )),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: next,
-                    child: Container(
-                      height: 50,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.amber.shade900,
-                      ),
-                      child: Center(
-                          child: Text(
-                        "next",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
-                      )),
-                    ),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),
