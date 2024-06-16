@@ -139,17 +139,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //print('Loading image from: ${AssetImage('images/pic1.jpg').assetName}');
     double h1 = MediaQuery.of(context).size.height;
     double w1 = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: ColorConst.background,
+      //appBar: AppBar(),
+      backgroundColor: ColorConst.secondary,
       body: Container(
         height: h1,
         width: w1,
         decoration: BoxDecoration(
-          gradient: ColorConst.backgroundG,
-        ),
+            // gradient: ColorConst.backgroundG,
+            ),
         child: Stack(
           children: [
             Column(
@@ -167,18 +169,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 300,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                              color: Colors.lightBlue[900],
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(40),
-                                topRight: Radius.circular(40),
-                                bottomLeft: Radius.circular(50),
-                                bottomRight: Radius.circular(50),
-                              ),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://pngtree.com/freebackground/orange-yellow-abstract-fluid-background_1306290.html"),
-                                  fit: BoxFit.fitHeight,
-                                  scale: 1)),
+                            // gradient: ColorConst.backgroundG,
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40),
+                              bottomLeft: Radius.circular(50),
+                              bottomRight: Radius.circular(50),
+                            ),
+                            /* image: DecorationImage(
+                              image: AssetImage('assets/images/pic1.jpg'),
+                              scale: 1,
+                              fit: BoxFit.contain,
+                            ), */
+                          ),
                         ),
                         Positioned(
                           bottom: 0,
@@ -205,18 +209,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   Text(
                                     "Question ${i + 1}/25",
-                                    style: TextStyle(
+                                    style: GoogleFonts.zcoolXiaoWei(
                                         color: ColorConst.textColor,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                   ),
-                                  SizedBox(height: 30),
+                                  SizedBox(height: 20),
                                   Text(
                                     DataBase.myDB[i]['question'],
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
+                                    style: GoogleFonts.adventPro(
+                                        // decoration: TextDecoration.underline,
                                         color: ColorConst.textColor,
-                                        fontSize: 20,
+                                        fontSize: 23,
                                         fontWeight: FontWeight.w500),
                                     textAlign: TextAlign.center,
                                   )
