@@ -21,7 +21,7 @@ class _ResultScreenState extends State<ResultScreen> {
 
     double scoreValue = widget.score / 25;
     return Scaffold(
-      backgroundColor: Colors.yellow.shade100,
+      backgroundColor: Colors.yellow.shade400,
       appBar: AppBar(
         backgroundColor: Colors.yellow,
         toolbarHeight: 80,
@@ -139,9 +139,10 @@ class _ResultScreenState extends State<ResultScreen> {
                   child: Center(
                     child: Text(
                       "continue",
-                      style: GoogleFonts.abyssinicaSil(
-                        color: Colors.grey.shade900,
+                      style: GoogleFonts.pacifico(
+                        color: Colors.black,
                         fontSize: 25,
+                        fontWeight: FontWeight.w100,
                       ),
                     ),
                   ),
