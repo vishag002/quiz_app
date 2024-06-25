@@ -145,7 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       //appBar: AppBar(),
-      backgroundColor: ColorConst.secondary,
+      //backgroundColor: ColorConst.secondary,
+      backgroundColor: Colors.yellow.shade400,
       body: Container(
         height: h1,
         width: w1,
@@ -160,9 +161,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
-                    height: 400,
+                    height: 380,
                     width: double.infinity,
-                    //    color: Colors.amber[100],
+                    // color: Colors.amber[100],
                     child: Stack(
                       children: [
                         Container(
@@ -177,11 +178,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               bottomLeft: Radius.circular(50),
                               bottomRight: Radius.circular(50),
                             ),
-                            /* image: DecorationImage(
-                              image: AssetImage('assets/images/pic1.jpg'),
-                              scale: 1,
-                              fit: BoxFit.contain,
-                            ), */
                           ),
                         ),
                         Positioned(
@@ -305,9 +301,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      InkWell(
+                      /* InkWell(
                         onTap: prev,
                         child: Container(
                           height: 50,
@@ -326,11 +322,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           )),
                         ),
                       ),
+                    */
                       InkWell(
                         onTap: next,
                         child: Container(
-                          height: 50,
-                          width: 100,
+                          height: 40,
+                          width: 80,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.amber.shade900,
