@@ -67,6 +67,7 @@ flutter:
     - assets/audio/
     - assets/lotti_animation/
     - assets/images/
+    - assets/images/pin1.png
    # - assets/audio/wrong-answer.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
