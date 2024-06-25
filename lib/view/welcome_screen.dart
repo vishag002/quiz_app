@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
 import 'package:quiz_app/view/home_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -9,67 +8,68 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /* appBar: AppBar(
-        backgroundColor: Colors.yellow,
-        toolbarHeight: 80,
-        title: Text(
-          "Flutter Quiz",
-          style: GoogleFonts.dmSerifText(
-            color: ColorConst.background,
-            fontSize: 30,
-          ),
-        ),
-        centerTitle: true,
-      ), */
-      //backgroundColor: Colors.amber,
       backgroundColor: Colors.yellow,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          /* Container(
-            height: 400,
-            width: double.infinity,
-            //  color: Colors.black,
-            child: Lottie.asset(
-              'assets/lotti_animation/brain.json',
-              height: 500,
-              width: 500,
-              fit: BoxFit.contain,
-            ),
-          ), */
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 50,
-            ),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ));
-              },
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.yellow.shade700,
+      body: Padding(
+        padding: const EdgeInsets.all(0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: 400,
+                  width: double.infinity,
+                  child: Image.asset(
+                    'assets/images/97350-OKYKYZ-792.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                child: Center(
-                  child: Text(
-                    "start",
-                    style: GoogleFonts.abyssinicaSil(
-                      color: Colors.grey.shade900,
-                      fontSize: 30,
+                Text(
+                  "Flutter Quiz",
+                  style: GoogleFonts.dmSerifDisplay(
+                    color: Colors.black,
+                    fontSize: 50,
+                    fontWeight: FontWeight.w300,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 70,
+              ),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(),
+                      ));
+                },
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(60),
+                    color: Colors.white,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Start Now",
+                      style: GoogleFonts.pacifico(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w100,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
